@@ -8,11 +8,8 @@
 # include "libft/includes/libft.h"
 
 typedef struct s_lex {
-    char            *great;
-    char            *less;
-    char            *great2;
-    char            *less2;
-    struct s_lex    *next;
+    char            *type;
+    char            *str;
 } t_lex;
 
 #endif

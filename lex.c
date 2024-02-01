@@ -31,9 +31,115 @@ int main(int ac, char **av)
     // }
 
     (void) ac;
-    char **str = ft_split(av[1], ' ');
-    int i = -1;
-    while (str[++i])
-        printf("%s\n", str[i]);
+    int i;
+    int j;
+    t_list   *chain;
+    t_list   *tmp;
+
+    i = 0;
+    chain = NULL;
+    while (av[1][i])
+    {
+        while (av[1][i] == ' ')
+            i++;
+        if (av[1][i] == '\0')
+            break ;
+        tmp = (t_list *)malloc(sizeof(t_list));
+        if (!tmp)
+            free(tmp);
+        tmp->content = (t_lex *)malloc(sizeof(t_lex));
+        if (!tmp->content)
+        {
+            free(tmp->content);
+            free(tmp);
+        }
+        if (av[1][i] == '|' && av[1][i + 1] == '|')
+        {
+            ((t_lex *) tmp->content)->type = "OR";
+            ((t_lex *) tmp->content)->str = "||";
+            i += 2;
+        }
+        else if (av[1][i] == '&' && av[1][i + 1] == '&')
+        {
+            ((t_lex *) tmp->content)->type = "AND";
+            ((t_lex *) tmp->content)->str = "&&";
+            i += 2;
+        }
+        else if (av[1][i] == '(')
+        {
+            ((t_lex *) tmp->content)->type = "LPAREN";
+            ((t_lex *) tmp->content)->str = "(";
+            i++;
+        }
+        else if (av[1][i] == ')')
+        {
+            ((t_lex *) tmp->content)->type = "RPAREN";
+            ((t_lex *) tmp->content)->str = ")";
+            i++;
+        }
+        else if (av[1][i] == '|')
+        {
+            ((t_lex *) tmp->content)->type = "PIPE";
+            ((t_lex *) tmp->content)->str = "|";
+            i++;
+        }
+        else if (av[1][i] == '<' && av[1][i + 1] == '<')
+        {
+            i += 2;
+            ((t_lex *) tmp->content)->type = "LLESS";
+            j = 0;
+            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+                j++;
+            ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
+            i += j;
+        }
+        else if (av[1][i] == '>' && av[1][i + 1] == '>')
+        {
+            i += 2;
+            ((t_lex *) tmp->content)->type = "GGREAT";
+            j = 0;
+            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+                j++;
+            ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
+            i += j;
+        }
+        else if (av[1][i] == '<')
+        {
+            i++;
+            ((t_lex *) tmp->content)->type = "LESS";
+            j = 0;
+            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+                j++;
+            ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
+            i += j;
+        }
+        else if (av[1][i] == '>')
+        {
+            i++;
+            ((t_lex *) tmp->content)->type = "GREAT";
+            j = 0;
+            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+                j++;
+            ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
+            i += j;
+        }
+        else
+        {
+            ((t_lex *) tmp->content)->type = "CMD";
+            j = 0;
+            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+                j++;
+            ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
+            i += j;
+        }
+        ft_lstadd_back(&chain, tmp);
+        printf("%s\n", ((t_lex *) tmp->content)->str);
+    }
+    tmp = chain;
+    while (tmp)
+    {
+        printf("%s\n", ((t_lex *) tmp->content)->type);
+        tmp = tmp->next;
+    }
     return (0);
 }
