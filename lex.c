@@ -1,5 +1,37 @@
 #include "minishell.h"
 
+int check_cmd(char *str, char *cmd)
+{
+    int i;
+
+    i = 0;
+    while (str[i] || cmd[i])
+    {
+        if (str[i] >= 'A' && str[i] <= 'Z')
+        {
+            if (!(cmd[i] == str[i] + 'a' - 'A' || cmd[i] == str[i]))
+                return (0);
+        }
+        else if (str[i] >= 'a' && str[i] <= 'z')
+        {
+            if (!(cmd[i] == str[i] + 'A' - 'a' || cmd[i] == str[i]))
+                return (0);
+        }
+        else
+        {
+            if (cmd[i] != str[i])
+                return (0);
+        }
+        i++;
+    }
+    return(1);
+}
+
+// void echo(char *str)
+// {
+//     return ;
+// }
+
 int main(int ac, char **av)
 {
     // char    **tokens;
@@ -141,5 +173,6 @@ int main(int ac, char **av)
         printf("%s\n", ((t_lex *) tmp->content)->type);
         tmp = tmp->next;
     }
+    printf("%d\n", check_cmd(av[1], "echo"));
     return (0);
 }
