@@ -27,41 +27,47 @@ int check_cmd(char *str, char *cmd)
     return(1);
 }
 
-// void echo(char *str)
-// {
-//     return ;
-// }
-
-int main(int ac, char **av)
+t_list *initenvp(char **envp)
 {
-    // char    **tokens;
-    // int     i;
-    // int     j;
+    t_list  *env;
+    t_list  *tmp;
+    int     i;
+    int     j;
 
-    // tokens = (char **)malloc(sizeof(char *) * (ac - 1));
-    // i = 0;
-    // while (++i < ac)
-    // {
-    //     j = 0;
-    //     if (av[i][j] == '<' && av[i][j + 1] == '<')
-    //         tokens[i - 1] = "LESSLESS";
-    //     else if (av[i][j] == '>' && av[i][j + 1] == '>')
-    //         tokens[i - 1] = "GREATGREAT";
-    //     else if (av[i][j] == '<')
-    //         tokens[i - 1] = "LESS";
-    //     else if (av[i][j] == '>')
-    //         tokens[i - 1] = "GREAT";
-    //     else if (av[i][j] == '|')
-    //         tokens[i - 1] = "PIPE";
-    //     else
-    //         tokens[i - 1] = av[i];
-    // }
-    // while (tokens[j])
-    // {
-    //     printf("%s\n", tokens[j]);
-    //     j++;
-    // }
+    i = -1;
+    while (envp[++i])
+    {
+        j = -1;
+        while (envp[i][++j] != '=');
+        tmp = (t_list *)malloc(sizeof(t_list));
+        if (!tmp)
+            return (NULL);
+        tmp->content = (t_lex *)malloc(sizeof(t_lex));
+        if (!tmp->content)
+        {
+            //free(env)
+            free(tmp->content);
+            free(tmp);
+        }
+        ((t_lex *) tmp->content)->type = ft_substr((const char *)envp[i], 0, j);
+        ((t_lex *) tmp->content)->str = ft_strdup(&envp[i][j + 1]);
+        printf("%s=%s\n", ((t_lex *) tmp->content)->type, ((t_lex *) tmp->content)->str);
+        ft_lstadd_back(&env, tmp);
+    }
+    return (env);
+}
 
+int find_special(char c)
+{
+    if (c == '|' || c == '&' || c == '<' 
+        || c == '>' || c == '(' || c == ')'
+        || c == ' ')
+        return (1);
+    return (0);
+}
+
+int main(int ac, char **av, char **envp)
+{
     (void) ac;
     int i;
     int j;
@@ -120,7 +126,7 @@ int main(int ac, char **av)
             i += 2;
             ((t_lex *) tmp->content)->type = "LLESS";
             j = 0;
-            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+            while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
             i += j;
@@ -130,7 +136,7 @@ int main(int ac, char **av)
             i += 2;
             ((t_lex *) tmp->content)->type = "GGREAT";
             j = 0;
-            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+            while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
             i += j;
@@ -140,7 +146,7 @@ int main(int ac, char **av)
             i++;
             ((t_lex *) tmp->content)->type = "LESS";
             j = 0;
-            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+            while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
             i += j;
@@ -150,7 +156,7 @@ int main(int ac, char **av)
             i++;
             ((t_lex *) tmp->content)->type = "GREAT";
             j = 0;
-            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+            while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
             i += j;
@@ -159,7 +165,7 @@ int main(int ac, char **av)
         {
             ((t_lex *) tmp->content)->type = "CMD";
             j = 0;
-            while(av[1][i + j] != ' ' && av[1][i + j] != '\0')
+            while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
             i += j;
@@ -173,6 +179,10 @@ int main(int ac, char **av)
         printf("%s\n", ((t_lex *) tmp->content)->type);
         tmp = tmp->next;
     }
-    printf("%d\n", check_cmd(av[1], "echo"));
+    (void) envp;
+    // printf("%d\n", check_cmd(av[1], "echo"));
+    // printf("%s\n", ft_strchr(envp[0], '='));
+    // printf("%s\n", ft_strrchr(envp[0], '='));
+    // initenvp(envp);
     return (0);
 }
