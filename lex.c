@@ -126,6 +126,10 @@ int main(int ac, char **av, char **envp)
             i += 2;
             ((t_lex *) tmp->content)->type = "LLESS";
             j = 0;
+            while(av[1][i + j] == ' ')
+                j++;
+            i = i + j;
+            j = 0;
             while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
@@ -135,6 +139,10 @@ int main(int ac, char **av, char **envp)
         {
             i += 2;
             ((t_lex *) tmp->content)->type = "GGREAT";
+            j = 0;
+            while(av[1][i + j] == ' ')
+                j++;
+            i = i + j;
             j = 0;
             while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
@@ -146,6 +154,10 @@ int main(int ac, char **av, char **envp)
             i++;
             ((t_lex *) tmp->content)->type = "LESS";
             j = 0;
+            while(av[1][i + j] == ' ')
+                j++;
+            i = i + j;
+            j = 0;
             while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
@@ -155,6 +167,10 @@ int main(int ac, char **av, char **envp)
         {
             i++;
             ((t_lex *) tmp->content)->type = "GREAT";
+            j = 0;
+            while(av[1][i + j] == ' ')
+                j++;
+            i = i + j;
             j = 0;
             while(!find_special(av[1][i + j]) && av[1][i + j] != '\0')
                 j++;

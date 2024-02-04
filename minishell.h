@@ -12,4 +12,10 @@ typedef struct s_lex {
     char            *str;
 } t_lex;
 
+typedef struct s_table {
+    char    *infile;
+    char    *outfile;
+    
+}   t_table;
+
 #endif
