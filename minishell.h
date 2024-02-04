@@ -15,7 +15,8 @@ typedef struct s_lex {
 typedef struct s_table {
     char    *infile;
     char    *outfile;
-    
+    int     append;
+    t_list  *cmd_lst;
 }   t_table;
 
 #endif

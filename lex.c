@@ -186,15 +186,50 @@ int main(int ac, char **av, char **envp)
             ((t_lex *) tmp->content)->str = ft_substr(av[1], i, j);
             i += j;
         }
+        //conditional checking on NULL infile/outfile
         ft_lstadd_back(&chain, tmp);
         printf("%s\n", ((t_lex *) tmp->content)->str);
     }
-    tmp = chain;
-    while (tmp)
-    {
-        printf("%s\n", ((t_lex *) tmp->content)->type);
-        tmp = tmp->next;
-    }
+
+    // data structure of parsing
+    // table -> table when diff pipe & duplicate redirection appears
+    // each table has 1 infile, 1 outfile, 1 cmd_lst
+    // cmd_lst -> cmd_lst when there is pipe, cmd_list is all cmds within that pipe
+    // in each cmd_lst, there should be another linked list / array to link all cmds
+
+    // tmp = chain;
+    // t_table *cmd_table;
+    // cmd_table = (t_table *) malloc(sizeof(t_table));
+    // cmd_table->infile = NULL;
+    // cmd_table->outfile = NULL;
+    // cmd_table->append = -1;
+    // cmd_table->cmd_lst = NULL;
+    // t_list *table;
+    // table = (t_list *) malloc(sizeof(t_list));
+    // table->content = (void *) cmd_table;
+    // table->next = NULL;
+    // while (tmp)
+    // {
+    //     if (ft_strncmp(((t_lex *) tmp->content)->type, "CMD", 3) == 0)
+    //     {
+    //         t_list *tmp_cmd_lst;
+    //         t_list *cmd;
+    //         t_list *tmp_cmd;
+    //         tmp_cmd_lst = (t_list *) malloc(sizeof(t_list));
+    //         tmp_cmd_lst->content = (void *)cmd;
+    //         tmp_cmd_lst->next = NULL;
+    //         cmd = tmp_cmd;
+    //         tmp_cmd = (t_list *) malloc(sizeof(t_list));
+    //         tmp_cmd->content = (void *) ft_strdup(((t_lex *) tmp->content)->str);
+    //         tmp_cmd->next = NULL;
+    //     }
+    //     // else if (ft_strncmp(((t_lex *) tmp->content)->type, "PIPE", 4) == 0)
+    // }
+    // while (tmp)
+    // {
+    //     printf("%s\n", ((t_lex *) tmp->content)->type);
+    //     tmp = tmp->next;
+    // }
     (void) envp;
     // printf("%d\n", check_cmd(av[1], "echo"));
     // printf("%s\n", ft_strchr(envp[0], '='));
