@@ -234,6 +234,6 @@ int main(int ac, char **av, char **envp)
     // printf("%d\n", check_cmd(av[1], "echo"));
     // printf("%s\n", ft_strchr(envp[0], '='));
     // printf("%s\n", ft_strrchr(envp[0], '='));
-    // initenvp(envp);
+    initenvp(envp);
     return (0);
 }
